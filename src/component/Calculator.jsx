@@ -1,7 +1,5 @@
+"use client"
 import React, { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function CommissionCalculator() {
   const [budget, setBudget] = useState(1000);
@@ -78,52 +76,62 @@ export default function CommissionCalculator() {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Project Commission Calculator</h2>
-      <Card className="space-y-4 p-4">
-        <CardContent className="space-y-4">
-          <div>
-            <Label>Project Budget ($)</Label>
-            <Input type="text" value={budget} onChange={e => setBudget(+e.target.value)} />
+    <div className="p-8 max-w-4xl mx-auto font-sans">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">🚀 Project Commission Calculator</h2>
+
+      <div className="bg-white rounded-2xl shadow-lg p-8 space-y-8">
+        <div>
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Project Details</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block font-medium mb-1">Project Budget ($)</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={budget} onChange={e => setBudget(+e.target.value)} />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Commission %</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={commissionPct} onChange={e => setCommissionPct(+e.target.value)} />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Estimated Days</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={estimatedDays} onChange={e => setEstimatedDays(+e.target.value)} />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Grace Period (Days)</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={gracePeriod} onChange={e => setGracePeriod(+e.target.value)} />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Actual Days</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={actualDays} onChange={e => setActualDays(+e.target.value)} />
+            </div>
           </div>
-          <div>
-            <Label>Commission %</Label>
-            <Input type="text" value={commissionPct} onChange={e => setCommissionPct(+e.target.value)} />
+        </div>
+
+        <div>
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Team Info</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block font-medium mb-1">Technical Persons</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={technicalCount} onChange={e => setTechnicalCount(+e.target.value)} />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Non-Technical Persons</label>
+              <input type="number" className="w-full border rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 transition" value={nonTechnicalCount} onChange={e => setNonTechnicalCount(+e.target.value)} />
+            </div>
           </div>
-          <div>
-            <Label>Estimated Days</Label>
-            <Input type="text" value={estimatedDays} onChange={e => setEstimatedDays(+e.target.value)} />
-          </div>
-          <div>
-            <Label>Grace Period (Days)</Label>
-            <Input type="text" value={gracePeriod} onChange={e => setGracePeriod(+e.target.value)} />
-          </div>
-          <div>
-            <Label>Actual Days</Label>
-            <Input type="text" value={actualDays} onChange={e => setActualDays(+e.target.value)} />
-          </div>
-          <div>
-            <Label>Technical Persons</Label>
-            <Input type="text" value={technicalCount} onChange={e => setTechnicalCount(+e.target.value)} />
-          </div>
-          <div>
-            <Label>Non-Technical Persons</Label>
-            <Input type="text" value={nonTechnicalCount} onChange={e => setNonTechnicalCount(+e.target.value)} />
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {results && (
-        <div className="mt-6 space-y-2">
+        <div className="mt-10 bg-gray-100 p-6 rounded-2xl shadow-md">
           {results.error ? (
             <p className="text-red-600 font-semibold">{results.error}</p>
           ) : (
             <>
-              <h3 className="text-xl font-semibold">Results</h3>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">📊 Results</h3>
               {results.graceExceeded ? (
                 <p className="text-yellow-600 font-semibold">Project exceeded the grace period. No commission awarded.</p>
               ) : (
-                <>
+                <div className="space-y-2 text-gray-700">
                   <p>Base Commission Pool (5%): <strong>${results.commissionPool}</strong></p>
                   <p>Speed Multiplier: <strong>{results.speedMultiplier}x</strong></p>
                   <p>Total Adjusted Pool: <strong>${results.finalPool}</strong></p>
@@ -133,7 +141,7 @@ export default function CommissionCalculator() {
                   {results.nonTechnicalShare && (
                     <p>Per Non-Technical Person Share: <strong>${results.nonTechnicalShare}</strong></p>
                   )}
-                </>
+                </div>
               )}
             </>
           )}
